@@ -15,6 +15,7 @@
 <script>
 
 import axios from "axios";
+import setAuthHeader from "../utils/setAuthHeader";
 export default {
 
   name: 'Formulario',
@@ -29,20 +30,8 @@ export default {
   methods: {
 
     consulta_cpf(){
-      const access_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJULkkuIEdlc3RvciIsInN1YiI6IjUwNWJhNDJlYTQ1NTUzNzYwNzkwMjk4NDc4ZDJmYmY0ZDA3OTFhMDIiLCJleHAiOjE2NjgxNzI3NTd9.l81YuePrhgKs8cousCnkSn7OwrrkjzPGGR9cluH4Tp0';
       const url ='http://localhost:9000/clientes';
       var self = this;
-
-
-      axios.interceptors.request.use(
-        config => {
-          config.headers.authorization = `Bearer ${access_token}`;
-          return config;
-        },
-        error => {
-          return Promise.reject(error);
-        }
-      );
 
       axios.get(url)
       .then(function (response){
@@ -50,6 +39,7 @@ export default {
         console.log(response);
         self.dados_cpf = response.data;
         self.cpf_keys = Object.keys( self.dados_cpf );
+        setAuthHeader(response.data.token);
 
       })
       .catch(function (error){
