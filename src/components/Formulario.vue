@@ -2,13 +2,7 @@
 
   <input type="text"  v-model="cpf"  v-on:change="consulta_cpf" placeholder="Digite o seu cpf">
   <div id="resultado" v-if="dados_cpf != null ">
-    <table>
-      <tr v-for="(item, index) in cpf_keys">
-        <td>
-          {{ item }}
-        </td>
-      </tr>
-    </table>
+   
   </div>
 </template>
 
@@ -29,9 +23,9 @@ export default {
   methods: {
 
     consulta_cpf(){
-      const access_token = localStorage.getItem('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJULkkuIEdlc3RvciIsInN1YiI6IjUwNWJhNDJlYTQ1NTUzNzYwNzkwMjk4NDc4ZDJmYmY0ZDA3OTFhMDIiLCJleHAiOjE2NjgyNjE0MjB9.f5cVqiem8TogDyOSCMDj3ydPu9fe2p_94wVz1cJhThg');
-      const AuthStr =  'Bearer '.concat(access_token);
-      const url ='http://localhost:9000/clientes';
+      const access_token = localStorage.getItem('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJULkkuIEdlc3RvciIsInN1YiI6IjUwNWJhNDJlYTQ1NTUzNzYwNzkwMjk4NDc4ZDJmYmY0ZDA3OTFhMDIiLCJleHAiOjE2NjgyNjUyODV9.7ssWY3z34Mgu-ZITmx2MBm6cF-sONdePPdhA2dVbHA8');
+      const AuthStr =  'Bearer'.concat(access_token);
+      const url ='http://localhost:9000/auth';
       var self = this;
 
       axios.get(url,
