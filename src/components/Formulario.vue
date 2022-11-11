@@ -29,14 +29,22 @@ export default {
   methods: {
 
     consulta_cpf(){
-      const url ="http://localhost:9000/clientes/58845437604";
+      const access_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJULkkuIEdlc3RvciIsInN1YiI6IjUwNWJhNDJlYTQ1NTUzNzYwNzkwMjk4NDc4ZDJmYmY0ZDA3OTFhMDIiLCJleHAiOjE2NjgxNzI3NTd9.l81YuePrhgKs8cousCnkSn7OwrrkjzPGGR9cluH4Tp0';
+      const url ='http://localhost:9000/clientes';
       var self = this;
 
-      axios.get(url, {
-        headers: {
-          'Authorization': `token ${access_token}`
+
+      axios.interceptors.request.use(
+        config => {
+          config.headers.authorization = `Bearer ${access_token}`;
+          return config;
+        },
+        error => {
+          return Promise.reject(error);
         }
-      })
+      );
+
+      axios.get(url)
       .then(function (response){
 
         console.log(response);
