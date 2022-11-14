@@ -2,7 +2,8 @@
 
   <input type="text"  v-model="cpf"  v-on:change="consulta_cpf" placeholder="Digite o seu cpf">
   <div id="resultado" v-if="dados_cpf != null ">
-   
+   Nome: {{dados_cpf.NOME}},
+   Nome Fantasia: {{ dados_cpf.NOME_FANTASIA}}
   </div>
 </template>
 
@@ -15,7 +16,7 @@ export default {
 
   data(){
     return{
-      cpf: '',
+      CNPJ_CPF: '',
       dados_cpf: null,
       cpf_keys: []
     }
@@ -32,7 +33,7 @@ export default {
 
         console.log(response);
         self.dados_cpf = response.data;
-        self.cpf_keys = Object.keys( self.dados_cpf );
+        //self.cpf_keys = Object.keys( self.dados_cpf );
       })
       .catch(function (error){
         console.log(error);
