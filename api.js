@@ -10,9 +10,36 @@ api.interceptors.request.use(
    
       return config;
     },
-    (error) => {
+    async (error) => {
+     
+      const originalRequest = error.config;
+
+      if(error?.response?.status === 401 &&
+        !originalRequest?.__isRetryRequest){
+
+        originalRequest.retry = true;
+        
+        const refreshToken = localStorage.getItem("refreshToken");
+        if(!refreshToken){
+
+          localStorage.clear();
+
+          return (window.location.href = "/");
+        }
+
+        const response = await refresh(refreshToken);
+
+        const data = {
+          acessToken = response.token;
+          refreshToken = response.refreshToken;
+        };
+
+        localStorage.setItem(JSON.stringify(data), "refreshToker");
+
+        return api(originalRequest);
+      }
+
       return Promise.reject(error);
-    }
-);
+    });
 
 export default api;

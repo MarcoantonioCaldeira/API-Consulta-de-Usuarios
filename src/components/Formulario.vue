@@ -1,9 +1,8 @@
 <template>
 
-  <input type="text" id="cpf2" v-model="cpf"  v-on:change="consulta_cpf">
-
-  <h1>Dados do cliente</h1>
+  <input type="text" v-model="cpf" v-on:change="getUser" placeholder="Digite o seu cpf">
   <div v-if="cpf_data != null">
+    <h1>Dados do cliente</h1>
     <br>ID_Cliente:{{ cpf_data.cod_Cliente }}
     <br>Ativo:{{ cpf_data.ativo }}
     <br>Bloqueado:{{ cpf_data.bloqueado }}
