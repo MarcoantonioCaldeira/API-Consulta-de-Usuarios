@@ -1,27 +1,24 @@
 <template>
 
-  <input type="text"  v-model="cpf"  v-on:change="consulta_cpf" placeholder="Digite o seu cpf">
-  <div>
-    <tr v-for="(item, index) in cpf_keys">
-      <td>
-        {{ cpf_data.cod_cliente }}
-        {{ cpf_data.ativo }}
-        {{ cpf_data.bloqueado }}
-      </td>
-    </tr>
+  <input type="text" id="cpf2" v-model="cpf"  v-on:change="consulta_cpf">
+
+  <h1>Dados do cliente</h1>
+  <div v-if="cpf_data != null">
+    <br>ID_Cliente:{{ cpf_data.cod_Cliente }}
+    <br>Ativo:{{ cpf_data.ativo }}
+    <br>Bloqueado:{{ cpf_data.bloqueado }}
   </div>
 </template>
 
 <script>
- import api from "/api";
+import api from "/api";
 
 export default {
  name: "User",
  data() {
    return {
      cpf: "",
-     cpf_data: null,
-     cpf_keys: []
+     cpf_data: null
    };
  },
  created() {
@@ -29,20 +26,16 @@ export default {
  },
  methods: {
 
-   getUser() {
+   getUser(){
 
-    var self = this
+    var self = this;
 
-     api
-       .get("http://localhost:9000/clientes/"+this.cpf)
+     api.get("http://localhost:9000/clientes/"+this.cpf)
        .then((res) => {
-
          console.log(res);
-         self.cpf_data = response.data;
-         self.cpf_keys = Object.keys( self.cpf_data );
-
+         self.cpf_data = res.data;
        })
-       .catch((error) => {
+       .catch((error)  => {
          console.log(error);
        });
    },
