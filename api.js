@@ -5,7 +5,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
     (config) => {
-      const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJULkkuIEdlc3RvciIsInN1YiI6IjUwNWJhNDJlYTQ1NTUzNzYwNzkwMjk4NDc4ZDJmYmY0ZDA3OTFhMDIiLCJleHAiOjE2Njg2ODI1MzB9.bp8DtVjksv3j6gmd2jhmxh-uljuFQw0b8K2kYSW67oU";
+      const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJULkkuIEdlc3RvciIsInN1YiI6IjUwNWJhNDJlYTQ1NTUzNzYwNzkwMjk4NDc4ZDJmYmY0ZDA3OTFhMDIiLCJleHAiOjE2Njg3NzE3NTZ9.PKrgVITOSYuk9YXyk4FO-BpINAv7g7ovI8wP2hIRUxM";
       config.headers.Authorization = `Bearer ${token}`;
    
       return config;
@@ -14,8 +14,7 @@ api.interceptors.request.use(
      
       const originalRequest = error.config;
 
-      if(error?.response?.status === 401 &&
-        !originalRequest?.__isRetryRequest){
+      if(error?.response?.status === 401 && !originalRequest?.__isRetryRequest){
 
         originalRequest.retry = true;
         
@@ -29,12 +28,8 @@ api.interceptors.request.use(
 
         const response = await refresh(refreshToken);
 
-        const data = {
-          acessToken = response.token;
-          refreshToken = response.refreshToken;
-        };
 
-        localStorage.setItem(JSON.stringify(data), "refreshToker");
+        localStorage.setItem(JSON.stringify(data), "refreshToken");
 
         return api(originalRequest);
       }
