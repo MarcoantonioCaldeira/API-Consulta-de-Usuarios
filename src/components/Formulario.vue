@@ -1,5 +1,4 @@
 <template>
-
   <input type="text" v-model="cpf" v-on:change="getUser" placeholder="Digite o seu cpf">
   <div v-if="cpf_data != null">
     <h1>Dados do cliente</h1>
@@ -23,7 +22,8 @@ export default {
  created() {
    this.getUser();
  },
- methods: {
+ 
+ methods:{
 
    getUser(){
 
