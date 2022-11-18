@@ -38,18 +38,6 @@ export default {
          console.log(error);
        });
    },
-
-   REFRESH_TOKEN: () => {
-      return new Promise((resolve, reject) => {
-        axios.post(`token/refresh`)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-      });
-    }
   }  
   
 };

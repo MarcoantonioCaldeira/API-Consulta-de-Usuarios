@@ -1,5 +1,4 @@
 import axios from "axios";
-import { reject, resolve } from "core-js/fn/promise";
 
 const api = axios.create({
  baseURL: "http://localhost:9000/clientes",
@@ -7,17 +6,27 @@ const api = axios.create({
 
 api.interceptors.request.use(
     (config) => {
-      const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJULkkuIEdlc3RvciIsInN1YiI6IjUwNWJhNDJlYTQ1NTUzNzYwNzkwMjk4NDc4ZDJmYmY0ZDA3OTFhMDIiLCJleHAiOjE2Njg3NzE3NTZ9.PKrgVITOSYuk9YXyk4FO-BpINAv7g7ovI8wP2hIRUxM";
       config.headers.Authorization = `Bearer ${token}`;
-   
       return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
+  },
     
 );
 
 
+const instance = axios.create();
+
+axios.interceptors.request.use(async (config) => {
+    if (token && refreshToken) {
+        const data = JSON.parse(atob(token.split('.')[1]));
+        const time = Math.floor(new Date().getTime() / 1000);
+        if (data.exp < time) {
+             instance.defaults.headers.common["Authorization"] = `Bearer ${refreshToken}`;
+             const { data } = await instance.get(SERVER.API_ROOT + '/tokens/refresh');
+             if (data?.AccessToken) localStorage.setItem(config.AUTH_TOKEN, data.AccessToken)
+                else localStorage.clear();
+            }
+     return config;
+  }
+})
 
 export default api;
