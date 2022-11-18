@@ -1,7 +1,7 @@
 <template>
   <input type="text" v-model="cpf" v-on:change="getUser" placeholder="Digite o seu cpf">
   <div v-if="cpf_data != null">
-    <h1>Dados do cliente</h1>
+   <h1>Dados do cliente</h1>
     <br>ID_Cliente:{{ cpf_data.cod_Cliente }}
     <br>Ativo:{{ cpf_data.ativo }}
     <br>Bloqueado:{{ cpf_data.bloqueado }}
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import api from "/services/api.js";
+import api from "./api";
 
 export default {
  name: "User",
@@ -22,7 +22,7 @@ export default {
  created() {
    this.getUser();
  },
- 
+
  methods:{
 
    getUser(){
@@ -38,7 +38,20 @@ export default {
          console.log(error);
        });
    },
- },
+
+   REFRESH_TOKEN: () => {
+      return new Promise((resolve, reject) => {
+        axios.post(`token/refresh`)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+      });
+    }
+  }  
+  
 };
 </script>
 

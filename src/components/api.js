@@ -1,4 +1,5 @@
 import axios from "axios";
+import { reject, resolve } from "core-js/fn/promise";
 
 const api = axios.create({
  baseURL: "http://localhost:9000/clientes",
@@ -10,8 +11,13 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
    
       return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
+    
 );
+
 
 
 export default api;
