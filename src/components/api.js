@@ -6,27 +6,30 @@ const api = axios.create({
 
 api.interceptors.request.use(
     (config) => {
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
+
+   let token = Response($.token)
+
+    config.headers.Authorization = `Bearer ${token}`;
+    return config;
   },
-    
-);
 
+  async (error) => {
+    if (error.response) {
+      if (error.response.status === 401) {
+        // Do something, call refreshToken() request for example;
+        // return a request
+        return axios_instance(config);
+      }
 
-const instance = axios.create();
+      if (error.response.status === ANOTHER_STATUS_CODE) {
+        // Do something 
+        return Promise.reject(error.response.data);
+      }
+    }
 
-axios.interceptors.request.use(async (config) => {
-    if (token && refreshToken) {
-        const data = JSON.parse(atob(token.split('.')[1]));
-        const time = Math.floor(new Date().getTime() / 1000);
-        if (data.exp < time) {
-             instance.defaults.headers.common["Authorization"] = `Bearer ${refreshToken}`;
-             const { data } = await instance.get(SERVER.API_ROOT + '/tokens/refresh');
-             if (data?.AccessToken) localStorage.setItem(config.AUTH_TOKEN, data.AccessToken)
-                else localStorage.clear();
-            }
-     return config;
+    return Promise.reject(error);
   }
-})
+    
+)
 
 export default api;

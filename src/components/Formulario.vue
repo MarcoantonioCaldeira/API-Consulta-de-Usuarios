@@ -29,17 +29,16 @@ export default {
 
     var self = this;
 
-     api.get("http://localhost:9000/clientes/"+this.cpf)
-       .then((res) => {
-         console.log(res);
-         self.cpf_data = res.data;
-       })
-       .catch((error)  => {
-         console.log(error);
-       });
-   },
-  }  
-  
+        api.get("http://localhost:9000/clientes/"+this.cpf)
+          .then((res) => {
+            console.log(res);
+            self.cpf_data = res.data;
+          })
+          .catch((error)  => {
+            console.log(error);
+          });
+      },
+   }
 };
 </script>
 
