@@ -7,29 +7,12 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
 
-   let token = Response($.token)
+   const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJULkkuIEdlc3RvciIsInN1YiI6IjUwNWJhNDJlYTQ1NTUzNzYwNzkwMjk4NDc4ZDJmYmY0ZDA3OTFhMDIiLCJleHAiOjE2NjkyMDQ3MDl9.BopWk-5ZA23Yzhvytc_yzA4KbllXmcswkdDsvqb1LKw";
 
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
 
-  async (error) => {
-    if (error.response) {
-      if (error.response.status === 401) {
-        // Do something, call refreshToken() request for example;
-        // return a request
-        return axios_instance(config);
-      }
-
-      if (error.response.status === ANOTHER_STATUS_CODE) {
-        // Do something 
-        return Promise.reject(error.response.data);
-      }
-    }
-
-    return Promise.reject(error);
-  }
-    
 )
 
 export default api;
