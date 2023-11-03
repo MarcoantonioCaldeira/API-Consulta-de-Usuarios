@@ -1,15 +1,27 @@
 <template>
-  <input type="text" v-model="cpf" v-on:change="getUser" placeholder="Digite o seu cpf">
-  <div v-if="cpf_data != null">
-   <h1>Dados do cliente</h1>
-    <br>ID_Cliente:{{ cpf_data.cod_Cliente }}
-    <br>Ativo:{{ cpf_data.ativo }}
-    <br>Bloqueado:{{ cpf_data.bloqueado }}
+  <div class="row my-2">
+    <div class="col-4" style="padding: 18px;">
+    <input class="form-control" type="text" v-model="cpf"  placeholder="Digite o seu cpf">
+  </div>
+  <div class="col-4" style="padding: 18px;">
+    <button  v-on:click="getUser()" class="btn btn-success">Retornar Dados</button>
+  </div>  
+
+  </div>
+
+  <div style="padding-left: 18px;" v-if="cpf_data != null">
+    <p class="h3">Dados do Cliente</p>
+    <div style="padding-left: 18px;">
+      <br><p class="h5">ID_Cliente: {{ cpf_data.cod_Cliente }}</p>
+      <br><p class="h5">Ativo: {{ cpf_data.ativo }}</p>
+      <br><p class="h5">Bloqueado: {{ cpf_data.bloqueado }}</p>
+    </div>
   </div>
 </template>
 
 <script>
-import api from "./api";
+import api, { getToken } from "./api";
+
 
 export default {
  name: "User",
@@ -19,30 +31,30 @@ export default {
      cpf_data: null
    };
  },
- created() {
-   this.getUser();
- },
 
  methods:{
 
-   getUser(){
+   async getUser(){
 
-    var self = this;
+    try{
 
-        api.get("http://localhost:9000/clientes/"+this.cpf)
-          .then((res) => {
-            console.log(res);
-            self.cpf_data = res.data;
-          })
-          .catch((error)  => {
-            console.log(error);
-          });
-      },
+      const token = await getToken();
+      const headers = {Authorization: `Bearer ${token}` };
+      const response = await  api.get(`/clientes/${this.cpf}`, {headers}); 
+
+      this.cpf_data = response.data;
+      return this.cpf_data;
+      
+    }catch(error){
+      console.log(error)
+    }
    }
-};
+}
+
+}
 </script>
 
 
-<style>
+<style src="./estilo.css">
 
 </style>

@@ -1,18 +1,46 @@
 import axios from "axios";
 
 const api = axios.create({
- baseURL: "http://localhost:9000/clientes",
+ baseURL: "http://localhost:9000",
 });
 
-api.interceptors.request.use(
-    (config) => {
+let token = null;
 
-   const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJULkkuIEdlc3RvciIsInN1YiI6IjUwNWJhNDJlYTQ1NTUzNzYwNzkwMjk4NDc4ZDJmYmY0ZDA3OTFhMDIiLCJleHAiOjE2NjkyMDQ3MDl9.BopWk-5ZA23Yzhvytc_yzA4KbllXmcswkdDsvqb1LKw";
 
-    config.headers.Authorization = `Bearer ${token}`;
-    return config;
-  },
+export const setToken = newToken => {
 
-)
+  token = newToken;
+  
+}
+
+export const getToken = async () => {
+
+  if (!token) {
+
+    await refreshToken(); 
+    
+  }
+  
+  return token;
+
+};
+
+const refreshToken = async () => {
+  try {
+    const response = await api.get('/auth',{
+      headers: {
+          key_auth: '3G5T8W7Y1K',
+      }
+    }); // Rota para obter novo token
+
+    const newToken = response.data.token;
+    setToken(newToken);
+
+  } catch (error) {
+
+    console.error('Erro ao obter novo token', error);
+  }
+};
+
 
 export default api;
